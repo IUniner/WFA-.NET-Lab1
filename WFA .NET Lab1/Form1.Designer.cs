@@ -48,11 +48,14 @@ namespace WFA.NET_Lab1
             // 
             // ResultBlock
             // 
+            this.ResultBlock.AcceptsReturn = true;
+            this.ResultBlock.AcceptsTab = true;
             this.ResultBlock.Location = new System.Drawing.Point(12, 12);
             this.ResultBlock.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.ResultBlock.Multiline = true;
             this.ResultBlock.Name = "ResultBlock";
-            this.ResultBlock.Size = new System.Drawing.Size(324, 232);
+            this.ResultBlock.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.ResultBlock.Size = new System.Drawing.Size(611, 232);
             this.ResultBlock.TabIndex = 0;
             // 
             // Button_Open
@@ -110,7 +113,7 @@ namespace WFA.NET_Lab1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(352, 469);
+            this.ClientSize = new System.Drawing.Size(635, 469);
             this.Controls.Add(this.openBinFile);
             this.Controls.Add(this.closeButton);
             this.Controls.Add(this.saveAsButton);

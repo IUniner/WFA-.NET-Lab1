@@ -11,13 +11,12 @@ using System.Windows;
 using System.Windows.Forms;
 using System.IO.Compression;
 using System.Linq.Expressions;
-//using Cake.Core.IO;
 
 namespace WFA.NET_Lab1
 {
     public partial class Form1
     {
-        List<Employer> employers = new List<Employer>();
+        Employer Employer = new Employer();
         NewFile currentFile = new NewFile();
         NewFile compressedFile = new NewFile();
         List<Button> dinButtons = new List<Button>();
@@ -28,7 +27,12 @@ namespace WFA.NET_Lab1
         {
             try
             {
-                
+                Employer.employers.Add(new Employer("Ilya", "Lelia", 20, 174.0, 3));
+                Employer.employers.Add(new Employer("Andrey", "Veselov", 20, 172.0, 2));
+                Employer.employers.Add(new Employer("Olga", "Aleksandrova", 19, 170.0));
+                Employer.employers.Add(new Employer("Alexander", "CalVal"));
+                Employer.SerializeBin(Employer.employers);
+                //Employer.BinWriter(Employer.employers);
             }
             catch (Exception ex)
             {
@@ -39,7 +43,6 @@ namespace WFA.NET_Lab1
         {
             try
             {
-                closeButton.Enabled = true;
                 //currentFile.name = OpenTxt();
                 //await TxtReaderAsync(currentFile.name);
 
@@ -103,6 +106,9 @@ namespace WFA.NET_Lab1
                     dinButtons.Add(DCmpButton);
                     DCmpButton.Click += new System.EventHandler(this.dcmpButton_click);
 
+                    openBinFile.Enabled = false;
+                    closeButton.Enabled = true;
+
                     MessageBox.Show("File opened!");
                 }
             }
@@ -115,40 +121,33 @@ namespace WFA.NET_Lab1
                 MessageBox.Show("Button_Open_Click error:" + ex.Message);
             }
         }
+
+        
         private void openBinFile_Click(object sender, EventArgs e)
         {
             try
             {
-
-                // создаем объект BinaryWriter
-                using (BinaryWriter writer = new BinaryWriter(File.Open(OpenBin(), FileMode.OpenOrCreate)))
+                //Employer.employers = Employer.BinReader();
+                Employer.employers = Employer.DeserializeBin();
+                ResultBlock.Text = "Имя:\tФамилия:\tРост:\tКоманда:\tВозраст:\r\n";
+                if(Employer.employers!=null)
+                foreach(var empr in Employer.employers)
                 {
-                    // записываем в файл значение каждого поля структуры
-                    foreach (Employer emp in employers)
-                    {
-                        writer.Write(emp.name);
-                        writer.Write(emp.lastName);
-                        writer.Write(emp.age);
-                        writer.Write(emp.stature);
-                        writer.Write(emp.staff);
-                    }
+                    ResultBlock.Text += empr.name + "\t" + empr.lastName + "\t\t" + empr.stature + "\t" + empr.staff + "\t" + empr.age + "\r\n";
                 }
-                // создаем объект BinaryReader
-                using (BinaryReader reader = new BinaryReader(File.Open(path, FileMode.Open)))
-                {
-                    // пока не достигнут конец файла
-                    // считываем каждое значение из файла
-                    while (reader.PeekChar() > -1)
-                    {
-                        string name = reader.ReadString();
-                        string capital = reader.ReadString();
-                        int area = reader.ReadInt32();
-                        double population = reader.ReadDouble();
 
-                        Console.WriteLine("Страна: {0}  столица: {1}  площадь {2} кв. км   численность населения: {3} млн. чел.",
-                            name, capital, area, population);
-                    }
-                }
+                var ClearBinButton = new Button();
+                ClearBinButton.Text = "Clear";
+                ClearBinButton.Name = "ClearBinButton";
+                ClearBinButton.Size = new Size(68, 23); // 
+                ClearBinButton.Location = new Point(100, 262); //220 + 35  7
+                Controls.Add(ClearBinButton);
+                dinButtons.Add(ClearBinButton);
+                ClearBinButton.Click += new System.EventHandler(this.clearBinButton_click);
+
+                Button_Open.Enabled = false;
+                saveAsButton.Enabled = false;
+                closeButton.Enabled = true;
             }
             catch (Exception ex)
             {
@@ -171,6 +170,8 @@ namespace WFA.NET_Lab1
                 Controls.Remove(FButton);
             }
             ResultBlock.Clear();
+            Button_Open.Enabled = true;
+            saveAsButton.Enabled = true;
             closeButton.Enabled = false;
 
             //send all files from \AppData\start to \AppData\end
@@ -194,12 +195,14 @@ namespace WFA.NET_Lab1
         {
             try
             {
-                using (var openPicker = new SaveFileDialog())
+                using (var openPicker = new SaveFileDialog())  
                 {
                     openPicker.FileName = "";
                     openPicker.DefaultExt = "txt";
                     openPicker.Filter =
-                        "Text files (*.txt)|*.txt|All files (*.*)|*.*";
+                        "Text files (*.txt)|*.txt|" +
+                        "Dat Files (*.dat)|*.dat|" +
+                        "All files (*.*)|*.*";
                     openPicker.InitialDirectory = dataFolder;
 
                     if (openPicker.ShowDialog() == DialogResult.Cancel)
@@ -236,7 +239,7 @@ namespace WFA.NET_Lab1
                 return null;
             }
         }
-        string OpenBin()
+        public string OpenBin()
         {
             try
             {
@@ -282,7 +285,7 @@ namespace WFA.NET_Lab1
                 return null;
             }
         }
-        string BrowseFolder()
+        public string BrowseFolder()
         {
             try
             {
@@ -359,36 +362,16 @@ namespace WFA.NET_Lab1
                 MessageBox.Show("TxtWriter error:" + ex.Message);
             }
         }
-        void BinWriter(string FileName)
-        {
-            try
-            {
-                using (StreamWriter sw = new StreamWriter(FileName))
-                {
-                    sw.Write(ResultBlock.Text);
-                }
-            }
-            catch (NullReferenceException ex)
-            {
-                MessageBox.Show("TxtWriter error:" + ex.Message);
-            }
-        }
-        void BinReader(string FileName)
-        {
-            try
-            {
-                if (FileName != null)
-                    using (StreamReader sr = new StreamReader(FileName))
-                    {
-                        ResultBlock.Text = sr.ReadToEnd();
-                    }
-            }
-            catch (NullReferenceException ex)
-            {
-                MessageBox.Show("TxtReader error:" + ex.Message);
-            }
-        }
 
+        void clearBinButton_click(object sender, EventArgs e)
+        {
+            currentFile.name = Employer.BinList;
+            File.Delete(Employer.BinList);
+            using (BinaryWriter bw = new BinaryWriter(File.Create(Employer.BinList = dataFolder + currentFile.name.Substring(currentFile.name.LastIndexOf('\\')))))
+            {
+
+            }
+        }
         void saveButton_click(object sender, EventArgs e)
         {
             TxtWriter(currentFile.name);
@@ -411,6 +394,7 @@ namespace WFA.NET_Lab1
         }
         void relocButton_click(object sender, EventArgs e)
         {
+            /*
             currentFile.dirInfo = new DirectoryInfo(BrowseFolder());
             compressedFile.name = currentFile.name; compressedFile.dirInfo = currentFile.dirInfo;
 
@@ -422,7 +406,8 @@ namespace WFA.NET_Lab1
                 }
             }
             File.Delete(compressedFile.name);
-            compressedFile.name = currentFile.name;
+            compressedFile.name = currentFile.name;*/
+            File.Move(currentFile.name,BrowseFolder()+currentFile.name.Substring(currentFile.name.LastIndexOf('\\')));
 
             MessageBox.Show("File located!");
         }
