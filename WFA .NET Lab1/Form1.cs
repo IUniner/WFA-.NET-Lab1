@@ -151,7 +151,8 @@ namespace WFA.NET_Lab1
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Form1_Load error:" + ex.Message);
+                //MessageBox.Show("openBinFile_Click error:" + ex.Message);
+                MessageBox.Show("File is empty");
             }
 
         }
@@ -173,6 +174,7 @@ namespace WFA.NET_Lab1
             Button_Open.Enabled = true;
             saveAsButton.Enabled = true;
             closeButton.Enabled = false;
+            openBinFile.Enabled = true;
 
             //send all files from \AppData\start to \AppData\end
                 /*
@@ -371,6 +373,11 @@ namespace WFA.NET_Lab1
             {
 
             }
+            ResultBlock.Clear();
+            Button_Open.Enabled = true;
+            saveAsButton.Enabled = true;
+            closeButton.Enabled = false;
+            Controls.Remove(dinButtons[dinButtons.Count()-1]);
         }
         void saveButton_click(object sender, EventArgs e)
         {
