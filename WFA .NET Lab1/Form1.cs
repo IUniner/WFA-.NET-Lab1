@@ -31,30 +31,25 @@ namespace WFA.NET_Lab1
                 Employer.employers.Add(new Employer("Andrey", "Veselov", 20, 172.0, 2));
                 Employer.employers.Add(new Employer("Olga", "Aleksandrova", 19, 170.0));
                 Employer.employers.Add(new Employer("Alexander", "CalVal"));
-                Employer.SerializeBin(Employer.employers);
-                //Employer.BinWriter(Employer.employers);
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Form1_Load error:" + ex.Message);
             }
         }
-        private void Button_Open_Click(object sender, EventArgs e)
+        private void Button_Open_Click(object sender, EventArgs e) // open text | .txt files
         {
             try
             {
-                //currentFile.name = OpenTxt();
-                //await TxtReaderAsync(currentFile.name);
-
-                TxtReader(currentFile.name = OpenTxt());
+                TxtReader(currentFile.name = OpenTxt()); //await TxtReaderAsync(currentFile.name= OpenTxt());
                 if (currentFile.name != null)
                 {
 
                     var SaveButton = new Button();
                     SaveButton.Text = "Save";
                     SaveButton.Name = "SaveButton";
-                    SaveButton.Size = new Size(70, 23); // 
-                    SaveButton.Location = new Point(30, 262); //220 + 35  7
+                    SaveButton.Size = new Size(70, 23);
+                    SaveButton.Location = new Point(30, 262);
                     Controls.Add(SaveButton);
                     dinButtons.Add(SaveButton);
                     SaveButton.Click += new System.EventHandler(this.saveButton_click);
@@ -107,6 +102,7 @@ namespace WFA.NET_Lab1
                     DCmpButton.Click += new System.EventHandler(this.dcmpButton_click);
 
                     openBinFile.Enabled = false;
+                    recordBinFile.Enabled = false;
                     closeButton.Enabled = true;
 
                     MessageBox.Show("File opened!");
@@ -120,15 +116,12 @@ namespace WFA.NET_Lab1
             {
                 MessageBox.Show("Button_Open_Click error:" + ex.Message);
             }
-        }
-
-        
-        private void openBinFile_Click(object sender, EventArgs e)
+        }        
+        private void openBinFile_Click(object sender, EventArgs e) // open bynary files
         {
             try
-            {
-                //Employer.employers = Employer.BinReader();
-                Employer.employers = Employer.DeserializeBin();
+            {                
+                Employer.employers = Employer.DeserializeBin(); //Employer.employers = Employer.BinReader(); | метод Deserialize()
                 ResultBlock.Text = "Имя:\tФамилия:\tРост:\tКоманда:\tВозраст:\r\n";
                 if(Employer.employers!=null)
                 foreach(var empr in Employer.employers)
@@ -139,8 +132,8 @@ namespace WFA.NET_Lab1
                 var ClearBinButton = new Button();
                 ClearBinButton.Text = "Clear";
                 ClearBinButton.Name = "ClearBinButton";
-                ClearBinButton.Size = new Size(68, 23); // 
-                ClearBinButton.Location = new Point(100, 262); //220 + 35  7
+                ClearBinButton.Size = new Size(68, 23);
+                ClearBinButton.Location = new Point(100, 299);
                 Controls.Add(ClearBinButton);
                 dinButtons.Add(ClearBinButton);
                 ClearBinButton.Click += new System.EventHandler(this.clearBinButton_click);
@@ -151,10 +144,12 @@ namespace WFA.NET_Lab1
             }
             catch (Exception ex)
             {
-                //MessageBox.Show("openBinFile_Click error:" + ex.Message);
-                MessageBox.Show("File is empty");
+                MessageBox.Show("File is empty/n" + ex.Message);
             }
-
+        }
+        private void recordBinFile_Click(object sender, EventArgs e)// save list of employers in binary .dat files
+        {
+            Employer.SerializeBin(Employer.employers); //запись бинарного файла, сериализация | метод Serialize()
         }
         private async void saveAsButton_Click(object sender, EventArgs e)
         {
@@ -164,7 +159,7 @@ namespace WFA.NET_Lab1
                 MessageBox.Show("File saved!");
             }
         }
-        private void closeButton_Click(object sender, EventArgs e)
+        private void closeButton_Click(object sender, EventArgs e) // close all files and reset option buttons
         {
             foreach (var FButton in dinButtons)
             {
@@ -173,25 +168,26 @@ namespace WFA.NET_Lab1
             ResultBlock.Clear();
             Button_Open.Enabled = true;
             saveAsButton.Enabled = true;
-            closeButton.Enabled = false;
             openBinFile.Enabled = true;
+            recordBinFile.Enabled = true;
+            closeButton.Enabled = false;
 
             //send all files from \AppData\start to \AppData\end
-                /*
-                string StartDir = @"C:\\Users\\Asus\\Desktop\\Универ\\3 Семестр. 2 Курс\\asp.net.C#\\Лабораторные работы. С#\\ЛР1\\WFA .NET Lab1\\WFA .NET Lab1\\AppData\\start";
-                string EndDir = @"C:\\Users\\Asus\\Desktop\\Универ\\3 Семестр. 2 Курс\\asp.net.C#\\Лабораторные работы. С#\\ЛР1\\WFA .NET Lab1\\WFA .NET Lab1\\AppData\\end";
+            /*
+            string StartDir = @"C:\\Users\\Asus\\Desktop\\Универ\\3 Семестр. 2 Курс\\asp.net.C#\\Лабораторные работы. С#\\ЛР1\\WFA .NET Lab1\\WFA .NET Lab1\\AppData\\start";
+            string EndDir = @"C:\\Users\\Asus\\Desktop\\Универ\\3 Семестр. 2 Курс\\asp.net.C#\\Лабораторные работы. С#\\ЛР1\\WFA .NET Lab1\\WFA .NET Lab1\\AppData\\end";
 
-                foreach(string filename in Directory.EnumerateFiles(StartDir))
+            foreach(string filename in Directory.EnumerateFiles(StartDir))
+            {
+                using(FileStream SourceStream = System.IO.File.Open(filename,FileMode.Open))
                 {
-                    using(FileStream SourceStream = System.IO.File.Open(filename,FileMode.Open))
+                    using (FileStream DestinationStream = System.IO.File.Create(EndDir + filename.Substring(filename.LastIndexOf('\\'))))
                     {
-                        using (FileStream DestinationStream = System.IO.File.Create(EndDir + filename.Substring(filename.LastIndexOf('\\'))))
-                        {
-                            await SourceStream.CopyToAsync(DestinationStream);
-                        }
+                        await SourceStream.CopyToAsync(DestinationStream);
                     }
-                }*/
-            }
+                }
+            }*/
+        } 
 
         string SaveTxt()
         {
@@ -365,7 +361,7 @@ namespace WFA.NET_Lab1
             }
         }
 
-        void clearBinButton_click(object sender, EventArgs e)
+        void clearBinButton_click(object sender, EventArgs e) // clear bin file and remove buttons
         {
             currentFile.name = Employer.BinList;
             File.Delete(Employer.BinList);
@@ -379,17 +375,17 @@ namespace WFA.NET_Lab1
             closeButton.Enabled = false;
             Controls.Remove(dinButtons[dinButtons.Count()-1]);
         }
-        void saveButton_click(object sender, EventArgs e)
+        void saveButton_click(object sender, EventArgs e)// save .txt files
         {
             TxtWriter(currentFile.name);
             MessageBox.Show("File Saved!");
         }
-        void copyButton_click(object sender, EventArgs e)
+        void copyButton_click(object sender, EventArgs e)// copy .txt files
         {
             TxtWriter(SaveTxt());
             MessageBox.Show("Copy saved!");
         }
-        void rnmButton_click(object sender, EventArgs e)
+        void rnmButton_click(object sender, EventArgs e)// rename .txt files
         {
             //nextFile.name = SaveTxt();
             //TxtWriter(nextFile.name);
@@ -399,7 +395,7 @@ namespace WFA.NET_Lab1
 
             MessageBox.Show("File renamed!");
         }
-        void relocButton_click(object sender, EventArgs e)
+        void relocButton_click(object sender, EventArgs e)// move .txt files
         {
             /*
             currentFile.dirInfo = new DirectoryInfo(BrowseFolder());
@@ -418,7 +414,7 @@ namespace WFA.NET_Lab1
 
             MessageBox.Show("File located!");
         }
-        void cmpButton_click(object sender, EventArgs e)
+        void cmpButton_click(object sender, EventArgs e)// compress .txt files
         {
             try
             {
@@ -430,7 +426,7 @@ namespace WFA.NET_Lab1
                 MessageBox.Show("cmpButton_click error:" + ex.Message);
             }
         }
-        void dcmpButton_click(object sender, EventArgs e)
+        void dcmpButton_click(object sender, EventArgs e)// decompress .gz files
         {
             try
             {

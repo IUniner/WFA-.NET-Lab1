@@ -37,13 +37,17 @@ namespace WFA.NET_Lab1
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.ResultBlock = new System.Windows.Forms.TextBox();
             this.Button_Open = new System.Windows.Forms.Button();
             this.saveAsButton = new System.Windows.Forms.Button();
             this.closeButton = new System.Windows.Forms.Button();
             this.openBinFile = new System.Windows.Forms.Button();
             this.fileSystemWatcher1 = new System.IO.FileSystemWatcher();
+            this.recordBinFile = new System.Windows.Forms.Button();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.fileSystemWatcher1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // ResultBlock
@@ -63,7 +67,7 @@ namespace WFA.NET_Lab1
             this.Button_Open.Location = new System.Drawing.Point(40, 271);
             this.Button_Open.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Button_Open.Name = "Button_Open";
-            this.Button_Open.Size = new System.Drawing.Size(98, 43);
+            this.Button_Open.Size = new System.Drawing.Size(99, 43);
             this.Button_Open.TabIndex = 3;
             this.Button_Open.Text = "Open File";
             this.Button_Open.UseVisualStyleBackColor = true;
@@ -95,10 +99,10 @@ namespace WFA.NET_Lab1
             // 
             // openBinFile
             // 
-            this.openBinFile.Location = new System.Drawing.Point(134, 271);
+            this.openBinFile.Location = new System.Drawing.Point(133, 271);
             this.openBinFile.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.openBinFile.Name = "openBinFile";
-            this.openBinFile.Size = new System.Drawing.Size(90, 43);
+            this.openBinFile.Size = new System.Drawing.Size(91, 43);
             this.openBinFile.TabIndex = 6;
             this.openBinFile.Text = "Open Bin File";
             this.openBinFile.UseVisualStyleBackColor = true;
@@ -109,21 +113,46 @@ namespace WFA.NET_Lab1
             this.fileSystemWatcher1.EnableRaisingEvents = true;
             this.fileSystemWatcher1.SynchronizingObject = this;
             // 
+            // recordBinFile
+            // 
+            this.recordBinFile.Location = new System.Drawing.Point(133, 318);
+            this.recordBinFile.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.recordBinFile.Name = "recordBinFile";
+            this.recordBinFile.Size = new System.Drawing.Size(91, 43);
+            this.recordBinFile.TabIndex = 7;
+            this.recordBinFile.Text = "Record Bin File";
+            this.recordBinFile.UseVisualStyleBackColor = true;
+            this.recordBinFile.Click += new System.EventHandler(this.recordBinFile_Click);
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
+            this.pictureBox1.Location = new System.Drawing.Point(315, 255);
+            this.pictureBox1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(297, 208);
+            this.pictureBox1.TabIndex = 8;
+            this.pictureBox1.TabStop = false;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(635, 469);
+            this.ClientSize = new System.Drawing.Size(627, 469);
+            this.Controls.Add(this.recordBinFile);
             this.Controls.Add(this.openBinFile);
             this.Controls.Add(this.closeButton);
             this.Controls.Add(this.saveAsButton);
             this.Controls.Add(this.Button_Open);
             this.Controls.Add(this.ResultBlock);
+            this.Controls.Add(this.pictureBox1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "Form1";
-            this.Text = "FolderManager";
+            this.Text = "FileManager";
             this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.fileSystemWatcher1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -137,6 +166,8 @@ namespace WFA.NET_Lab1
         private Button closeButton;
         private Button openBinFile;
         private FileSystemWatcher fileSystemWatcher1;
+        private Button recordBinFile;
+        private PictureBox pictureBox1;
     }
 }
 
